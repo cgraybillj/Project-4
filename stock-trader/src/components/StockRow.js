@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { iex } from '../config/iex'
 
 class StockRow extends Component {
 
@@ -12,12 +13,13 @@ class StockRow extends Component {
 
     componentDidMount(){
         //insert data
-        this.setState({
-            data: {
-                price:5,
-                date:'12-12-12',
-                time: '09:30'
-            }
+        const url = `${iex.base_url}stock/${this.props.ticker}/intraday-prices?chartLast=1&token=${iex.api_token}`
+        fetch(url)
+        .then((response) => response.json())
+        .then((data)=>{
+             this.setState({
+                data: data[data.length - 1]
+        })
         })
     }
 
@@ -25,9 +27,9 @@ class StockRow extends Component {
         return (
             <tr>
                 <td>{this.props.ticker}</td>
-                <td>{this.state.data.price}</td>
+                <td>{this.state.data.close}</td>
                 <td>{this.state.data.date}</td>
-                <td>{this.state.data.time}</td>
+                <td>{this.state.data.label}</td>
             </tr>
         )
     }

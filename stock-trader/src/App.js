@@ -1,8 +1,31 @@
-import React from 'react';
+import React, { useSemiPersistentState, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StockRow from './components/StockRow'
+import Search from './components/Search'
+
+const STOCK_PRICES = [
+  { name: 'AAPL', price: '120' },
+  { name: 'MSFT', price: '110' },
+  { name: 'INTL', price: '80' }
+]
 
 function App() {
+  const [searchTicker, setSearchTicker] = useState('aapl');
+
+  const onInputChange = (event) => {
+    setSearchTicker(event.target.value);
+  };
+
+  const getStock = () => {
+    let stock;
+    STOCK_PRICES.map((s) => {
+      if (s.name == searchStockStr) {
+        stock = s;
+      }
+    })
+
+  }
+
   return (
     <div className="App">
       <div className='container'>
@@ -19,7 +42,7 @@ function App() {
               <th> Time </th>
             </tr>
           </thead>
-          <tbody className='text-center'>
+          <tbody>
             <StockRow name='SP 500' ticker='spy' />
             <StockRow name='NASDAQ' ticker='qqq' />
             <StockRow name='DOW' ticker='dow' />
@@ -32,11 +55,24 @@ function App() {
         <div class="row">
           <div class="col-sm">
             <div className="input-group mb-3">
-              <input type="text" className="form-control" placeholder="Ticker Symbol" aria-label="Ticker Symbol" aria-describedby="button-addon2"></input>
+              <input type="text" className="form-control" placeholder="Type Your Ticker Symbol!" aria-label="Ticker Symbol" aria-describedby="button-addon2" value={searchTicker} onChange={onInputChange} />
+              <button class="btn btn-outline-secondary" type="button" id="button-addon2" onClick={getStock}>Search Ticker!</button>
               <div className="input-group-append">
-                <button className="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
               </div>
             </div>
+            <table className='table table-bordered'>
+              <thead className='thead-dark'>
+                <tr className='text-center'>
+                  <th> Ticker </th>
+                  <th> Price </th>
+                  <th> Spread </th>
+                  <th> Volume </th>
+                </tr>
+              </thead>
+              <tbody className='text-center'>
+
+              </tbody>
+            </table>
           </div>
           <div class="col-sm">
             One of three columns

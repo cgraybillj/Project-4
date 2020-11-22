@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import  {iex}  from '../config/iex'
+import { iex } from '../config/iex'
 
-class StockRow extends Component {
+class Search extends Component {
 
 
     constructor(props) {
@@ -17,6 +17,7 @@ class StockRow extends Component {
         fetch(url)
         .then((response) => response.json())
         .then((data)=>{
+            console.log(data)
              this.setState({
                 data: data[data.length - 1]
         })
@@ -26,14 +27,13 @@ class StockRow extends Component {
     render() {
         return (
             <tr>
-                <td>{this.props.name}</td>
                 <td>{this.props.ticker}</td>
                 <td>{this.state.data.close}</td>
-                <td>{this.state.data.date}</td>
-                <td>{this.state.data.label}</td>
+                <td>{this.state.data.low} - {this.state.data.high}</td>
+                <td>{this.state.data.volume}</td>
             </tr>
         )
     }
 }
 
-export default StockRow;
+export default Search;

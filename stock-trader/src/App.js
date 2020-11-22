@@ -9,11 +9,23 @@ const STOCK_PRICES = [
 ]
 
 function App() {
-  //const [searchTicker, setSearchTicker] = useState('aapl');
   const [searchStockStr, setSearchStockStr] = useState('');
   const [selectedStock, setSelectedStock] = useState('');
   const [shares, setShares] = useState('1');
-  const [cash, setCash] = useState(100000);
+  const [cash, setCash] = useState(10000);
+
+const buyStock = async () => {
+    let cost = shares * selectedStock.price;
+    let cashRemaining = cash - cost;
+    console.log(setCash(cashRemaining));
+  };
+
+const sellStock = async () => {
+    let gain = shares * selectedStock.price;
+    let cashGained = cash + gain;
+    console.log(setCash(cashGained));
+  }
+  
 
   const getQuote = async () => {
     let stock;
@@ -35,17 +47,6 @@ function App() {
     setSearchStockStr(event.currentTarget.value);
   }
 
-  const buyStock = async () => {
-    let cost = shares * selectedStock.price;
-    let cashRemaining = cash - cost;
-    setCash (cashRemaining);
-  };
-
-  const sellStock = async () => {
-    let gain = shares * selectedStock.price;
-    let cashGained = cash + gain;
-    setCash (cashGained);
-  }
 
   return (
     <div className="App">
@@ -108,16 +109,31 @@ function App() {
               }} className={shares == 20 ? 'alert alert-success' : 'alert alert-primary'}>20</button>&nbsp;&nbsp;
             <br />
               <br />
+
             <button className='alert alert-success' onClick={buyStock}>BUY</button>&nbsp;&nbsp;
-            <button className='alert alert-danger'onCick={sellStock}>SELL</button>
+            <button className='alert alert-danger' onCick={sellStock}>SELL</button>&nbsp;&nbsp;
 
             </div>}
-            </div>
+          </div>
 
-            <div className="col-sm">
-            <div className='alert alert-info'> Cash Available: {cash} </div>
-            <div ClassName='alert alert-info'> Postions:  </div>
-         
+          <div className="col-sm">
+            <div className='alert alert-info'> Postions:  </div>
+            <div className='container'>
+              <table className='table table-bordered'>
+                <thead className='thead-dark'>
+                  <tr>
+                    <th> Name </th>
+                    <th> Ticker </th>
+                    <th> # of Shares </th>
+                    <th> Price </th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+            <div className='alert alert-danger text-center'> Cash Available: {cash} </div>
           </div>
         </div>
       </div>

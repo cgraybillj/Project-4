@@ -11,20 +11,28 @@ const STOCK_PRICES = [
 
 function App() {
   const [searchTicker, setSearchTicker] = useState('aapl');
+  const [searchStockStr, setSearchStockStr] = useState('');
+  const [selectedStock, setSelectedStock] = useState();
 
   const onInputChange = (event) => {
     setSearchTicker(event.target.value);
   };
 
-  const getStock = () => {
+  const getQuote = async () => {
     let stock;
     STOCK_PRICES.map((s) => {
-      if (s.name == searchStockStr) {
+      if(s.name == searchStockStr){
         stock = s;
       }
     })
 
-  }
+    // console.log(stock);
+
+    setSelectedStock(stock);
+
+    console.log('get quote was clicked! and the value of the search string is: ', searchStockStr);
+    setSearchStockStr('');
+  };
 
   return (
     <div className="App">

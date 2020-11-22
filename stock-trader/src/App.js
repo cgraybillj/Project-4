@@ -1,7 +1,6 @@
 import React, { useSemiPersistentState, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StockRow from './components/StockRow'
-import Search from './components/Search'
 
 const STOCK_PRICES = [
   { name: 'AAPL', price: '120' },
@@ -10,13 +9,9 @@ const STOCK_PRICES = [
 ]
 
 function App() {
-  const [searchTicker, setSearchTicker] = useState('aapl');
+  //const [searchTicker, setSearchTicker] = useState('aapl');
   const [searchStockStr, setSearchStockStr] = useState('');
-  const [selectedStock, setSelectedStock] = useState();
-
-  const onInputChange = (event) => {
-    setSearchTicker(event.target.value);
-  };
+  const [selectedStock, setSelectedStock] = useState('');
 
   const getQuote = async () => {
     let stock;
@@ -33,6 +28,11 @@ function App() {
     console.log('get quote was clicked! and the value of the search string is: ', searchStockStr);
     setSearchStockStr('');
   };
+
+  const onInputChange = async (event) => {
+    // console.log(event.currentTarget.value);
+    setSearchStockStr(event.currentTarget.value);
+  }
 
   return (
     <div className="App">
@@ -59,30 +59,49 @@ function App() {
       </div>
 
 
-      <div class="container">
-        <div class="row">
-          <div class="col-sm">
+      <div className="container">
+        <div className="row">
+          <div className="col-sm">
             <div className="input-group mb-3">
-              <input type="text" className="form-control" placeholder="Type Your Ticker Symbol!" aria-label="Ticker Symbol" aria-describedby="button-addon2" value={searchTicker} onChange={onInputChange} />
-              <button class="btn btn-outline-secondary" type="button" id="button-addon2" onClick={getStock}>Search Ticker!</button>
+              <input type="text" className="form-control" placeholder="Type Your Ticker Symbol!" aria-label="Ticker Symbol" aria-describedby="button-addon2" value={searchStockStr} onChange={onInputChange} />
+              <button class="btn btn-outline-secondary" type="button" id="button-addon2" onClick={getQuote}>Search Ticker!</button>
               <div className="input-group-append">
               </div>
             </div>
-            <table className='table table-bordered'>
-              <thead className='thead-dark'>
-                <tr className='text-center'>
-                  <th> Ticker </th>
-                  <th> Price </th>
-                  <th> Spread </th>
-                  <th> Volume </th>
-                </tr>
-              </thead>
-              <tbody className='text-center'>
+           
+          {selectedStock && <div>
+            <p className='alert alert-success'>Current Selected Stock: {selectedStock.name} | Price: ${selectedStock.price}</p>
 
-              </tbody>
-            </table>
-          </div>
-          <div class="col-sm">
+            <br/>
+            <button onClick={() => {
+              setShares(1);
+            }} className={shares==1 ? 'alert alert-success' : 'alert alert-primary'}>1</button>&nbsp;&nbsp;
+
+            <button onClick={() => {
+              setShares(5);
+            }} className={shares==5 ? 'alert alert-success' : 'alert alert-primary'}>5</button>&nbsp;&nbsp;
+
+            <button onClick={() => {
+              setShares(10);
+            }} className={shares==10 ? 'alert alert-success' : 'alert alert-primary'}>10</button>&nbsp;&nbsp;
+
+            <button onClick={() => {
+              setShares(15);
+            }} className={shares==15 ? 'alert alert-success' : 'alert alert-primary'}>15</button>&nbsp;&nbsp;
+
+            <button onClick={() => {
+              setShares(20);
+            }} className={shares==20 ? 'alert alert-success' : 'alert alert-primary'}>20</button>&nbsp;&nbsp;
+            {/*<button className={'border border-teal-500 text-white pl-2 pr-2 bg-teal-600 rounded'}>25</button>&nbsp;&nbsp;*/}
+            {/*<button className={'border border-teal-500 text-white pl-2 pr-2 bg-teal-600 rounded'}>30</button>&nbsp;&nbsp;*/}
+
+            <br/>
+            <br/>
+            <button className='alert alert-success' onClick={buyStock}>BUY</button>&nbsp;&nbsp;
+            <button className='alert alert-danger'>SELL</button>
+
+          </div>}
+          <div className="col-sm">
             One of three columns
     </div>
         </div>

@@ -13,6 +13,7 @@ function App() {
   const [searchStockStr, setSearchStockStr] = useState('');
   const [selectedStock, setSelectedStock] = useState('');
   const [shares, setShares] = useState('1');
+  const [cash, setCash] = useState(100000);
 
   const getQuote = async () => {
     let stock;
@@ -31,16 +32,20 @@ function App() {
   };
 
   const onInputChange = async (event) => {
-    // console.log(event.currentTarget.value);
     setSearchStockStr(event.currentTarget.value);
   }
 
   const buyStock = async () => {
-    console.log('The user wants to buy ', shares , ' quantity ', ' of ',  selectedStock.name ,  ' at ', selectedStock.price);
     let cost = shares * selectedStock.price;
-    console.log('the cost is: ', cost);
-
+    let cashRemaining = cash - cost;
+    setCash (cashRemaining);
   };
+
+  const sellStock = async () => {
+    let gain = shares * selectedStock.price;
+    let cashGained = cash + gain;
+    setCash (cashGained);
+  }
 
   return (
     <div className="App">
@@ -110,7 +115,8 @@ function App() {
             </div>
 
             <div className="col-sm">
-              One of three columns
+            <div className='alert alert-info'> Cash Available: {cash} </div>
+            <div ClassName='alert alert-info'> Postions:  </div>
          
           </div>
         </div>

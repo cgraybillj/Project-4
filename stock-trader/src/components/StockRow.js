@@ -17,6 +17,7 @@ class StockRow extends Component {
         fetch(url)
         .then((response) => response.json())
         .then((data)=>{
+            console.log(data)
              this.setState({
                 data: data[data.length - 1]
         })
@@ -26,6 +27,7 @@ class StockRow extends Component {
     render() {
         return (
             <tr>
+                <td>{this.props.name}</td>
                 <td>{this.props.ticker}</td>
                 <td>{this.state.data.close}</td>
                 <td>{this.state.data.date}</td>

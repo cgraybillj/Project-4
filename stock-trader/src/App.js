@@ -14,18 +14,12 @@ function App() {
   const [shares, setShares] = useState('1');
   const [cash, setCash] = useState(10000);
 
-const buyStock = async () => {
-    let cost = shares * selectedStock.price;
-    let cashRemaining = cash - cost;
-    console.log(setCash(cashRemaining));
+  function handleBuyStonk() {
+    setCash(cash - shares * selectedStock.price);
   };
-
-const sellStock = async () => {
-    let gain = shares * selectedStock.price;
-    let cashGained = cash + gain;
-    console.log(setCash(cashGained));
+  function handleSellStonk() {
+    setCash(cash + shares * selectedStock.price);
   }
-  
 
   const getQuote = async () => {
     let stock;
@@ -35,18 +29,13 @@ const sellStock = async () => {
       }
     })
 
-    // console.log(stock);
-
     setSelectedStock(stock);
-
-    console.log('get quote was clicked! and the value of the search string is: ', searchStockStr);
     setSearchStockStr('');
   };
 
   const onInputChange = async (event) => {
     setSearchStockStr(event.currentTarget.value);
   }
-
 
   return (
     <div className="App">
@@ -71,8 +60,6 @@ const sellStock = async () => {
           </tbody>
         </table>
       </div>
-
-
       <div className="container">
         <div className="row">
           <div className="col-sm">
@@ -110,8 +97,8 @@ const sellStock = async () => {
             <br />
               <br />
 
-            <button className='alert alert-success' onClick={buyStock}>BUY</button>&nbsp;&nbsp;
-            <button className='alert alert-danger' onCick={sellStock}>SELL</button>&nbsp;&nbsp;
+              <button className='alert alert-success' onClick={handleBuyStonk}>BUY</button>&nbsp;&nbsp;
+            <button className='alert alert-danger' onClick={handleSellStonk}>SELL</button>&nbsp;&nbsp;
 
             </div>}
           </div>

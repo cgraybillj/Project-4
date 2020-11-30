@@ -41,7 +41,7 @@ function App() {
 
   return (
     <div className="App">
-
+      <br/>
       <div className='container'>
         <div className='alert alert-info text-center'> The Markets Today! </div>
       </div>

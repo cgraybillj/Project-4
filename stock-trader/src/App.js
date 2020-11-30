@@ -8,7 +8,7 @@ function App() {
   const [query, setQuery] = useState('AAPL')
   const [url, setURL] = useState('https://cloud.iexapis.com/stable/stock/AAPL/quote?token=pk_bdd25ea4aa4348f4ac78d98e1182b6dc');
   const [cash, setCash] = useState(10000);
-  const [shares, setShares] = useState('')
+  const [shares, setShares] = useState('1');
 
   const getData = () => {
     fetch(`${url}`,
@@ -17,8 +17,9 @@ function App() {
         return response.json();
       })
       .then(function (myJson) {
-        console.log(myJson)
+
         setData([myJson])
+
       });
   }
   useEffect(() => {
@@ -26,11 +27,17 @@ function App() {
   }, [url])
 
   function handleBuyStonk() {
-    setCash(cash - shares * selectedStock.price);
+
+    {
+      data && data.length > 0 && data.map((item, i) => setCash(cash - shares * item.close))
+    }
+
   };
   function handleSellStonk() {
-    setCash(cash + shares * selectedStock.price);
-  };
+    {
+      data && data.length > 0 && data.map((item, i) => setCash(cash + shares * item.close))
+    }
+  }
 
   return (
     <div className="App">
@@ -51,23 +58,69 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            <StockRow name='Apple' ticker='AAPL' />
-            <StockRow name='Microsoft' ticker='MSFT' />
-            <StockRow name='Tesla' ticker='TSLA' />
+            <StockRow name='Apple' ticker='SPY' />
+            <StockRow name='Microsoft' ticker='DOW' />
+            <StockRow name='Tesla' ticker='QQQ' />
           </tbody>
         </table>
       </div>
 
-      <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
-      <button type="button" onClick={() =>
-        setURL(`https://cloud.iexapis.com/stable/stock/${query}/quote?token=pk_bdd25ea4aa4348f4ac78d98e1182b6dc`)}>
-        Search
-      </button>
-      {
-        data && data.length > 0 && data.map((item, i) => <p key={i}>{item.close}</p>)
-      }
-      
-    </div>
+      <div className="container">
+        <div className="row">
+          <div className="col-sm">
+            <div className='container'>
+              <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
+              <button type="button" className="btn btn-success" onClick={() =>
+                setURL(`https://cloud.iexapis.com/stable/stock/${query}/quote?token=pk_bdd25ea4aa4348f4ac78d98e1182b6dc`)}>
+                Search
+              </button>
+            </div>
+
+            <div className='container'>
+              <div className='alert alert-warning text-center'>
+                {
+                  data && data.length > 0 && data.map((item, i) => <p key={i}> Stock: {item.companyName} | Price: {item.close}</p>)
+                }
+              </div>
+            </div>
+            {query && <div>
+
+              <br />
+              <button onClick={() => {
+                setShares(1);
+              }} className={shares == 1 ? 'alert alert-success' : 'alert alert-info'}>1</button>&nbsp;&nbsp;
+
+            <button onClick={() => {
+                setShares(5);
+              }} className={shares == 5 ? 'alert alert-success' : 'alert alert-info'}>5</button>&nbsp;&nbsp;
+
+                  < button onClick={() => {
+                setShares(10);
+              }} className={shares == 10 ? 'alert alert-success' : 'alert alert-info'}>10</button>&nbsp;&nbsp;
+
+            <button onClick={() => {
+                setShares(15);
+              }} className={shares == 15 ? 'alert alert-success' : 'alert alert-info'}>15</button>&nbsp;&nbsp;
+
+            <button onClick={() => {
+                setShares(20);
+              }} className={shares == 20 ? 'alert alert-success' : 'alert alert-info'}>20</button>&nbsp;&nbsp;
+            <br />
+              <br />
+              <button className={'alert alert-success'} onClick={handleBuyStonk}>BUY</button>&nbsp;&nbsp;
+                <button className={'alert alert-danger'} onClick={handleSellStonk}>SELL</button>
+
+            </div>}
+          </div>
+          <div className="col-sm">
+            <div className='alert alert-danger text-center'> Cash Available: {cash} </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div >
   );
 }
 

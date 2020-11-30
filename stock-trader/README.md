@@ -1,3 +1,12 @@
+Carlos Graybill
+
+This is my fourth project. This project utilizes the iex cloud API to obtain equities informaiton and return and input. The user will also be able to buy and sell stocks on the app. 
+
+Improvement:
+
+Need to add the current postions that the user holds and the ability to sell the stock. Also need to improve the design of the application. 
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

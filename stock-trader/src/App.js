@@ -74,7 +74,7 @@ function App() {
                 Search
               </button>
             </div>
-
+            <br />
             <div className='container'>
               <div className='alert alert-warning text-center'>
                 {

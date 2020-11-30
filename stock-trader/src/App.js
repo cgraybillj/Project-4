@@ -64,7 +64,6 @@ function App() {
           </tbody>
         </table>
       </div>
-
       <div className="container">
         <div className="row">
           <div className="col-sm">
@@ -108,7 +107,7 @@ function App() {
             <br />
               <br />
               <button className={'alert alert-success'} onClick={handleBuyStonk}>BUY</button>&nbsp;&nbsp;
-                <button className={'alert alert-danger'} onClick={handleSellStonk}>SELL</button>
+                <button className={'alert alert-danger'} onClick={handleSellStonk}>SELL</button>&nbsp;&nbsp;
 
             </div>}
           </div>

@@ -1,4 +1,6 @@
 var express = require('express');
+var sqlite3 = require('sqlite3');
+var db = new sqlite3.Database('account.db');
 var app = express();
 var port = 8000;
 

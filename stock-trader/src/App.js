@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StockRow from './components/StockRow';
-
+import axios from 'axios';
 
 function App() {
   const [data, setData] = useState({ stonk: [] });
@@ -9,6 +9,7 @@ function App() {
   const [url, setURL] = useState('https://cloud.iexapis.com/stable/stock/AAPL/quote?token=pk_bdd25ea4aa4348f4ac78d98e1182b6dc');
   const [cash, setCash] = useState(10000);
   const [shares, setShares] = useState('1');
+  const [position, setPosition] = useState([]);
 
   const getData = () => {
     fetch(`${url}`,
@@ -19,6 +20,7 @@ function App() {
       .then(function (myJson) {
 
         setData([myJson])
+        console.log(data)
 
       });
   }
@@ -26,22 +28,36 @@ function App() {
     getData()
   }, [url])
 
+  let fetchPositions = async () => {
+    let res = await fetch('http://localhost:9000/account');
+    let stuff = await res.json();
+    setPosition(stuff);
+    console.log(position);
+  }
+
+  useEffect(() => {
+    fetchPositions();
+  }, [])
+
+
   function handleBuyStonk() {
 
     {
-      data && data.length > 0 && data.map((item, i) => setCash(cash - shares * item.close))
+      data && data.length > 0 && data.map((item, i) => setCash(cash - shares * item.close)
+      )
     }
 
   };
+
   function handleSellStonk() {
     {
       data && data.length > 0 && data.map((item, i) => setCash(cash + shares * item.close))
     }
-  }
+  };
 
   return (
     <div className="App">
-      <br/>
+      <br />
       <div className='container'>
         <div className='alert alert-info text-center'> The Markets Today! </div>
       </div>
@@ -58,9 +74,9 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            <StockRow name='Apple' ticker='SPY' />
-            <StockRow name='Microsoft' ticker='DOW' />
-            <StockRow name='Tesla' ticker='QQQ' />
+            <StockRow name='SPY' ticker='SPY' />
+            <StockRow name='DOW' ticker='DOW' />
+            <StockRow name='QQQ' ticker='QQQ' />
           </tbody>
         </table>
       </div>
@@ -113,6 +129,23 @@ function App() {
           </div>
           <div className="col-sm">
             <div className='alert alert-danger text-center'> Cash Available: {cash} </div>
+
+            <div className='container'>
+              <div className='alert alert-warning text-center'>
+                {
+                  position && position.length > 0 && position.map((item) => <p key={item.id}> Stock: {item.stonkTicker} &nbsp;&nbsp; | Shares: {item.numShares} &nbsp;&nbsp;| Purchase Price: {item.purchasePrice}
+
+                  &nbsp;&nbsp;&nbsp;
+
+                    <button className={'alert alert-danger'} onClick={handleSellStonk}> Sell Position! </button>
+
+                  </p>
+
+                  )
+                }
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
